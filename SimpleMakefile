@@ -1,0 +1,17 @@
+# Requirements
+# 1. Ensure that `make` utility in avaible
+# 2. Ensure that this file name is `Makefile`
+# 3. Ensure that this file uses only tabs as prefix & not spaces
+
+# Setting Version
+APP_VERSION=0.34
+
+
+help:	## Help Command
+	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
+
+version: ## Prints the Application Version
+	set -e; \
+	export APP_VERSION=${IMAGE_VERSION}
+	@echo "Application Version "${IMAGE_VERSION}
+
