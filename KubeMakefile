@@ -1,0 +1,20 @@
+# In kuberdeployments we cannot easly do version of containter images so easily.
+# So we are using another tool called `envsubst`
+
+# Inside the kube/airflow-deployment.dev.yml, we have images names as 
+#    `image: "msampathkumar/airflow-k8:${IMAGE_VERSION}"`
+
+IMAGE_VERSION=01.1904
+
+version:
+	set -e; \
+	export IMAGE_VERSION=${IMAGE_VERSION}
+	@echo "Image Version "${IMAGE_VERSION}
+
+status:
+	kubectl get pods,svc
+
+dev:
+	export IMAGE_VERSION=${IMAGE_VERSION};
+	envsubst < kube/airflow-deployment.dev.yml | kubectl delete -f -
+	envsubst < kube/airflow-deployment.dev.yml | kubectl create -f -
