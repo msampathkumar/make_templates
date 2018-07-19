@@ -1,0 +1,27 @@
+IMAGE_VERSION=01.1904
+
+help:	## Help Command
+	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
+
+version: ## Prints Build version
+	set -e; \
+	export IMAGE_VERSION=${IMAGE_VERSION}
+	@echo "Image Version "${IMAGE_VERSION}
+
+build: ##
+	docker build --rm -t sampathm/docker-airflow:${IMAGE_VERSION} .
+
+run:
+	docker run -d \
+	--name airflow \
+	-p 5555:5555 \
+	-p 8080:8080 \
+	-e LOAD_EX=n \
+	sampathm/docker-airflow:${IMAGE_VERSION} bash
+
+rm:
+	docker rm -f airflow
+
+exec:
+	docker exec -it airflow -- bash
+
